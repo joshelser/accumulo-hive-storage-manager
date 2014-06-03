@@ -1,24 +1,16 @@
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/commons-collections-3.2.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/commons-configuration-1.5.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/commons-io-1.4.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/commons-lang-2.4.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/commons-logging-1.0.4.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/commons-vfs2-2.0.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/jline-0.9.94.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/guava-13.0.1.jar;
-add jar /Users/bfemiano/cloud/zookeeper-3.4.2/zookeeper-3.4.2.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/accumulo-trace-1.6.0-SNAPSHOT.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/accumulo-fate-1.6.0-SNAPSHOT.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/accumulo-core-1.6.0-SNAPSHOT.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/accumulo-server-1.6.0-SNAPSHOT.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/accumulo-start-1.6.0-SNAPSHOT.jar;
-add jar /Users/bfemiano/cloud/accumulo-trunk/trunk/lib/accumulo-hive-storage-handler-1.6.0-SNAPSHOT.jar;
+add jar /usr/local/lib/accumulo/lib/guava.jar;
+add jar /usr/local/lib/zookeeper/zookeeper-3.4.5.jar;
+add jar /usr/local/lib/accumulo/lib/accumulo-trace.jar;
+add jar /usr/local/lib/accumulo/lib/accumulo-fate.jar;
+add jar /usr/local/lib/accumulo/lib/accumulo-core.jar;
+add jar /usr/local/lib/accumulo/lib/accumulo-start.jar;
+add jar /Users/jelser/projects/hive.git/packaging/target/apache-hive-0.14.0-SNAPSHOT-bin/apache-hive-0.14.0-SNAPSHOT-bin/lib/hive-accumulo-handler-0.14.0-SNAPSHOT.jar;
 
 DROP TABLE IF EXISTS acled;
 CREATE EXTERNAL TABLE acled(rowid STRING, lat DOUBLE, lon DOUBLE, loc STRING, src STRING, type STRING, fid INT, pid BIGINT) 
-STORED BY 'org.apache.accumulo.storagehandler.AccumuloStorageHandler' 
+STORED BY 'org.apache.hadoop.hive.accumulo.AccumuloStorageHandler' 
 WITH SERDEPROPERTIES ('accumulo.columns.mapping' = 'rowID,cf|lat,cf|lon,cf|loc,cf|src,cf|type,cf|fid,cf|pid',
-	'accumulo.table.name' = 'acled'); 
+	'accumulo.table.name' = 'acled');
 	
 select pid from acled where pid != 1111 limit 100;
 		
@@ -34,7 +26,7 @@ select * from acled where loc = 'Clough Creek';
 
 DROP TABLE IF EXISTS acled2;
 CREATE EXTERNAL TABLE acled2(rowid STRING, lat DOUBLE, lon DOUBLE, loc STRING, src STRING, type STRING) 
-STORED BY 'org.apache.accumulo.storagehandler.AccumuloStorageHandler' 
+STORED BY 'org.apache.hadoop.hive.accumulo.AccumuloStorageHandler' 
 WITH SERDEPROPERTIES ('accumulo.columns.mapping' = 'rowID,cf|lat,cf|lon,cf|loc,cf|src,cf|type',
 	'accumulo.no.iterators' = 'true',
 	'accumulo.table.name' = 'acled');
